@@ -1,0 +1,19 @@
+CREATE VIEW umair_active_storage_info AS
+SELECT
+    b.branch_id,
+    b.branch_name,
+    uf.item_name,
+    us.status,
+    uf.available_qty_kg AS available_quantity
+FROM
+    umair_branch_tab b
+JOIN
+    umair_container_tab uc ON b.branch_id = uc.branch_id
+JOIN
+    umair_storage_tab us ON uc.container_id = us.container_id
+JOIN
+    umair_fooditem_tab uf ON us.item_id = uf.item_id
+WHERE
+    us.status = 'Stored';
+    
+
