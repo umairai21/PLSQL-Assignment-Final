@@ -1,18 +1,9 @@
-CREATE VIEW umair_all_branches_info AS
-SELECT
-    b.branch_id,
-    b.branch_name,
-    b.branch_address,
-    b.branch_manager,
-    b.total_warehouse_capacity,
-    SUM(c.max_volume) AS used_capacity,
-    b.total_warehouse_capacity - SUM(c.max_volume) AS remaining_capacity
-FROM
-    umair_branch_tab b
-LEFT JOIN
-    umair_container_tab c ON b.branch_id = c.branch_id
-GROUP BY
-    b.branch_id, b.branch_name, b.branch_address, b.branch_manager, b.total_warehouse_capacity;
+CREATE OR REPLACE VIEW umair_all_branches_info AS
+SELECT b.branch_id, b.branch_name, 
+       umair_branch_api.get_total_capacity(b.branch_id, b.company_id) AS total_capacity,
+       umair_branch_api.get_remaining_capacity(b.branch_id, b.company_id) AS remaining_capacity
+FROM umair_branch_tab b;
+
+
 
    
-    
